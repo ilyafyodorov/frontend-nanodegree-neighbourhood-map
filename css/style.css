@@ -1,0 +1,19 @@
+.list-group{
+    overflow-y:scroll;
+}
+.col-md-10{
+    padding: 0px;
+}
+#map {
+    height:95vh;
+    width: 82vw;
+    margin: 10px;
+}
+@media (max-width: 991px) {
+    .list-group { max-height: 200px; }
+    #map {
+        height: calc(85vh - 200px);
+        width: 97vw;
+        margin: 10px;        
+    }
+}
