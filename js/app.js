@@ -145,18 +145,29 @@ function init() {
 
         this.markerArray = [];
             
+        //Define and fill in the Model from stored data set
+        
         this.locationList = ko.observableArray([]);
         
         allLocations.forEach(function(locItem){
 
-            that.locationList.push(new Location(locItem))
+            that.locationList.push(new Location(locItem));
             
+        });
+
+        this.currentLocation = ko.observable(this.locationList()[0]);
+        
+        //Create ViewModel objects based on Model data
+
+        this.locationList().forEach(function(locItem){
+        
             that.markerArray.push(new google.maps.Marker({
-                position: locItem.latlng,
+                position: locItem.latlng(),
                 map: that.map,
-                title: locItem.name
+                title: locItem.name(),
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             }));
-            // Create an onclick event to open an infowindow at each marker.
+            // Create an onclick event to open an infowindow at each marker and change its color to green
             that.markerArray[that.markerArray.length-1].addListener('click', function() {
                 that.markerArray.forEach(function(marker){
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
@@ -169,8 +180,6 @@ function init() {
         });
         
         this.map.fitBounds(this.bounds);
-        
-        this.currentLocation = ko.observable(this.locationList()[0]);
         
         this.switchLocation = function(locationListItem) {
             that.currentLocation(locationListItem);    
@@ -185,9 +194,6 @@ function init() {
             });
         };
 
-        
-
-        
     };
 
     ko.applyBindings(new ViewModel());
