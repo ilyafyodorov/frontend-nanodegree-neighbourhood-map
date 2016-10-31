@@ -111,23 +111,10 @@ function init() {
         ];
 
     var Location = function(data) {
-        this.clickCount = ko.observable(data.clickCount);
-        this.level = ko.computed(function() {
-            var levelRet;
-                if(this.clickCount()==0) {
-                   levelRet = 'New';
-                };
-                if((this.clickCount()>0)&&(this.clickCount()<5)) {
-                   levelRet = 'Baseload';
-                };
-                if(this.clickCount()>=5) {
-                   levelRet = 'Mature';
-                };             
-            return 'Level: '+levelRet;
-        }, this);
         this.name = ko.observable(data.name);
         this.imgSrc = ko.observable(data.imgSrc);
-        this.synonyms = ko.observableArray(data.synonyms);
+        this.imgAttribution = ko.observable(data.imgAttribution);
+        this.latlng = ko.observable(data.latlng);
     };
 
 
@@ -149,10 +136,7 @@ function init() {
             infowindow.marker = marker;
             infowindow.setContent('<div>' + marker.title + '</div>');
             infowindow.open(map, marker);
-            // Make sure the marker property is cleared if the infowindow is closed.
-            infowindow.addListener('closeclick',function(){
-              infowindow.setMarker(null);
-            });
+
           }
         };
 
@@ -174,7 +158,11 @@ function init() {
             }));
             // Create an onclick event to open an infowindow at each marker.
             that.markerArray[that.markerArray.length-1].addListener('click', function() {
+                that.markerArray.forEach(function(marker){
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                });
                 that.populateInfoWindow(this, that.largeInfowindow);
+                this.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
             });
             that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
 
@@ -183,12 +171,21 @@ function init() {
         this.map.fitBounds(this.bounds);
         
         this.currentLocation = ko.observable(this.locationList()[0]);
-
+        
         this.switchLocation = function(locationListItem) {
-            that.currentLocation(locationListItem);        
+            that.currentLocation(locationListItem);    
+            //find current marker and make it green
+            that.markerArray.forEach(function(marker){
+               if(marker.title == that.currentLocation().name()) {
+                   marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                   that.populateInfoWindow(marker, that.largeInfowindow)
+               } else {
+                   marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');               
+               }
+            });
         };
 
-
+        
 
         
     };
