@@ -239,32 +239,6 @@ function init() {
         //Marker array object as a part of ViewModel        
         this.markerArray = [];
 
-
-        //Fill in marker array using Model data
-        this.locationList().forEach(function(locItem){
-        
-            that.markerArray.push(new google.maps.Marker({
-                position: locItem.latlng(),
-                map: that.map,
-                title: locItem.name(),
-                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-            }));
-            
-            // Create an onclick event to open an infowindow at each marker and change its color to green
-            that.markerArray[that.markerArray.length-1].addListener('click', function() {
-                that.markerArray.forEach(function(marker){
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                });
-                that.populateInfoWindow(this, that.largeInfowindow, locItem.imgSrc(), locItem.imgAttribution());
-                this.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-            });
-            that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
-
-        });
-        
-        //Update map bounds after adding all markers
-        this.map.fitBounds(this.bounds);
-
         //Location switch processing
         this.switchLocation = function(locationListItem) {
             that.currentLocation(locationListItem);    
@@ -277,7 +251,37 @@ function init() {
                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');               
                }
             });
-        };
+        };        
+
+        //Fill in marker array using Model data
+        this.locationList().forEach(function(locItem){
+        
+            that.markerArray.push(new google.maps.Marker({
+                position: locItem.latlng(),
+                map: that.map,
+                title: locItem.name(),
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            }));
+            
+            // Create an onclick event to open an infowindow at each marker and change its color to green
+            
+            that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
+            
+            /*that.markerArray[that.markerArray.length-1].addListener('click', function() {
+                that.markerArray.forEach(function(marker){
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                });
+                that.populateInfoWindow(this, that.largeInfowindow, locItem.imgSrc(), locItem.imgAttribution());
+                this.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+            });*/
+            
+            
+            that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
+
+        });
+        
+        //Update map bounds after adding all markers
+        this.map.fitBounds(this.bounds);
 
     };
 
