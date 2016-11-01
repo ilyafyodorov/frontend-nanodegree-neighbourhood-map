@@ -5,7 +5,7 @@ function init() {
     var allLocations = [
             {
                 name : 'Krom fortress',
-                flickrSearchString: 'pskov%20krom',
+                flickrSearchString: 'псков%20кремль',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.824098, lng: 28.327088},
@@ -103,7 +103,7 @@ function init() {
             },
             {
                 name : 'Menshikov Chambers',
-                flickrSearchString: 'Greatness%20of%20Trinity%20Cathedral',
+                flickrSearchString: 'палаты%20меньшикова',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.812303, lng: 28.335181},
@@ -131,61 +131,11 @@ function init() {
             },
         ];
 
-//  APPLICATION DATA INITIALIZATION - GET PHOTOS FROM FLICKR
 
-    //counter to check that all content was loaded
-    var counter = 0;
-
-    //Preparation: get Flickr photos of sights using flickr image search API
-    //Loop over locations
-
-    getFlickrData = function()
-    {
-        //Create search string
-        flickrURL='https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=756d2646bbf50cde087d43bb80dd3696&format=json&nojsoncallback=1&text='+allLocations[counter].flickrSearchString;
-        //send request
-        $.ajax({
-            url: flickrURL,
-            async: true,
-            dataType: 'json',
-            success:function(data){
-                counter++;
-
-                //Parse responce
-                //Create image link and attribution if images were returned
-                if(data.photos.total>0) {
-                    var far=data.photos.photo[0].farm.toString();
-                    var id=data.photos.photo[0].id;
-                    var sec=data.photos.photo[0].secret;
-                    var ser=data.photos.photo[0].server;
-                    var own=data.photos.photo[0].owner;
-                    allLocations[counter-1].imgSrc='https://c2.staticflickr.com/'+far+'/'+ser+'/'+id+'_'+sec+'_z.jpg';
-                    allLocations[counter-1].imgAttribution='https://www.flickr.com/photos/'+own+'/';
-                } else {
-                    allLocations[counter-1].imgSrc='img/noimage.png';
-                    allLocations[counter-1].imgAttribution='#';
-                };
-
-                if (counter > 17) {
-                    initializeKnockout();
-                } else {
-                    getFlickrData();
-                };
-
-            },
-            fail:function(data){
-                alert('could not connect to Flickr');
-                initializeKnockout();
-            }
-        });
-
-
-    };
-
-    getFlickrData();
+    // Flickr API URL for search requests
+    flickrURL='https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=756d2646bbf50cde087d43bb80dd3696&format=json&nojsoncallback=1&text='
 
 //  KNOCKOUT - BASED MV* APPLICATION STARTS HERE
-
 
 //  Definition of Model object - Location
 
@@ -194,6 +144,7 @@ function init() {
         this.imgSrc = ko.observable(data.imgSrc);
         this.imgAttribution = ko.observable(data.imgAttribution);
         this.latlng = ko.observable(data.latlng);
+        this.flickrSearchString = ko.observable(data.flickrSearchString);
     };
 
 //  Definition of View Model
@@ -245,8 +196,43 @@ function init() {
             //find current marker and make it green
             that.markerArray.forEach(function(marker){
                if(marker.title == that.currentLocation().name()) {
-                   marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-                   that.populateInfoWindow(marker, that.largeInfowindow, that.currentLocation().imgSrc(), that.currentLocation().imgAttribution())
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    var thisMarker=marker;
+
+                    //perform Flickr search for location
+                    //send request
+                    $.ajax({
+                        url: flickrURL+that.currentLocation().flickrSearchString(),
+                        async: true,
+                        dataType: 'json',
+
+                        success:function(data){
+                            var imgSrc;
+                            var imgAttribution;
+                            //Parse responce
+                            //Create image link and attribution if images were returned
+                            if(data.photos.total>0) {
+                                var far=data.photos.photo[0].farm.toString();
+                                var id=data.photos.photo[0].id;
+                                var sec=data.photos.photo[0].secret;
+                                var ser=data.photos.photo[0].server;
+                                var own=data.photos.photo[0].owner;
+                                imgSrc='https://c2.staticflickr.com/'+far+'/'+ser+'/'+id+'_'+sec+'_z.jpg';
+                                imgAttribution='https://www.flickr.com/photos/'+own+'/';
+                            } else {
+                                imgSrc='img/noimage.png';
+                                imgAttribution='#';
+                            };
+                            that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution)
+                        },
+
+                        error:function(){
+
+                            that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noimage.png', '#')
+
+                        }
+                    });
+
                } else {
                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                }
@@ -277,9 +263,6 @@ function init() {
     };
 
     //Initialize knockout
-    function initializeKnockout() {
-        $( ".cover" ).hide();
-        ko.applyBindings(new ViewModel());
-    };
+    ko.applyBindings(new ViewModel());
 
 }
