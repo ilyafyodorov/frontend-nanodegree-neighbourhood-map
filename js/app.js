@@ -163,7 +163,7 @@ function init() {
             that.locationList.push(new Location(locItem));
 
         });
-        
+
         this.currentLocation = ko.observable(this.locationList()[0]);
 
         //Create ViewModel objects based on Model data
@@ -242,23 +242,23 @@ function init() {
 
         //Marker array object as a part of ViewModel
         this.markerArray = [];
-        
+
         //function - display markers based on filter
         this.displayFilteredMarkers = function(){
-            
+
             //clear any previous marker data
             for (var i = 0; i < that.markerArray.length; i++) {
                 that.markerArray[i].setMap(null);
             }
             that.markerArray = [];
 
-            
+
             //Fill in marker array using Model data
             that.locationList().forEach(function(locItem){
-                
+
                 //add marker only if location is filtered
                 if (locItem.filtered()==true) {
-                
+
                     that.markerArray.push(new google.maps.Marker({
                         position: locItem.latlng(),
                         map: that.map,
@@ -271,7 +271,7 @@ function init() {
                     that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
 
                     that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
-                    
+
                 }
 
             });
@@ -279,8 +279,7 @@ function init() {
             //Update map bounds after adding all markers
             that.map.fitBounds(this.bounds);
         };
-        
-        
+
         //Function to filter markers according to user input
         this.doFiltering = function(formElement) {
             //get filter value from the form
@@ -293,20 +292,17 @@ function init() {
                 if (index != -1) {
                     locItem.filtered(true);
                 } else {
-                    locItem.filtered(false);                
+                    locItem.filtered(false);
                 }
             });
-            
+
             this.displayFilteredMarkers();
-            
-        }        
-                
+
+        }
+
         this.displayFilteredMarkers();
 
     };
-
-    
-    
     //Initialize knockout
     ko.applyBindings(new ViewModel());
 
