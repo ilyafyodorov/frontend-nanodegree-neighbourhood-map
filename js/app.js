@@ -145,6 +145,7 @@ function init() {
         this.imgAttribution = ko.observable(data.imgAttribution);
         this.latlng = ko.observable(data.latlng);
         this.flickrSearchString = ko.observable(data.flickrSearchString);
+        this.filtered = ko.observable(true);
     };
 
 //  Definition of View Model
@@ -162,7 +163,7 @@ function init() {
             that.locationList.push(new Location(locItem));
 
         });
-
+        
         this.currentLocation = ko.observable(this.locationList()[0]);
 
         //Create ViewModel objects based on Model data
@@ -187,8 +188,7 @@ function init() {
 
         //Bounds object as a part of ViewModel
         this.bounds = new google.maps.LatLngBounds();
-        //Marker array object as a part of ViewModel
-        this.markerArray = [];
+
 
         //Location switch processing
         this.switchLocation = function(locationListItem) {
@@ -239,29 +239,74 @@ function init() {
             });
         };
 
-        //Fill in marker array using Model data
-        this.locationList().forEach(function(locItem){
 
-            that.markerArray.push(new google.maps.Marker({
-                position: locItem.latlng(),
-                map: that.map,
-                title: locItem.name(),
-                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-            }));
+        //Marker array object as a part of ViewModel
+        this.markerArray = [];
+        
+        //function - display markers based on filter
+        this.displayFilteredMarkers = function(){
+            
+            //clear any previous marker data
+            for (var i = 0; i < that.markerArray.length; i++) {
+                that.markerArray[i].setMap(null);
+            }
+            that.markerArray = [];
 
-            // Create an onclick event to open an infowindow at each marker and change its color to green
+            
+            //Fill in marker array using Model data
+            that.locationList().forEach(function(locItem){
+                
+                //add marker only if location is filtered
+                if (locItem.filtered()==true) {
+                
+                    that.markerArray.push(new google.maps.Marker({
+                        position: locItem.latlng(),
+                        map: that.map,
+                        title: locItem.name(),
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                    }));
 
-            that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
+                    // Create an onclick event to open an infowindow at each marker and change its color to green
 
-            that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
+                    that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
 
-        });
+                    that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
+                    
+                }
 
-        //Update map bounds after adding all markers
-        this.map.fitBounds(this.bounds);
+            });
+
+            //Update map bounds after adding all markers
+            that.map.fitBounds(this.bounds);
+        };
+        
+        
+        //Function to filter markers according to user input
+        this.doFiltering = function(formElement) {
+            //get filter value from the form
+            var filterValue=formElement[0].value;
+            var index;
+            //for each list item
+            that.locationList().forEach(function(locItem){
+                //Case-insensitive search within list item name
+                var index = locItem.name().search(new RegExp(filterValue, "i"));
+                if (index != -1) {
+                    locItem.filtered(true);
+                } else {
+                    locItem.filtered(false);                
+                }
+            });
+            
+            this.displayFilteredMarkers();
+            
+        }        
+                
+        this.displayFilteredMarkers();
 
     };
 
+    
+    
     //Initialize knockout
     ko.applyBindings(new ViewModel());
 
