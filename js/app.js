@@ -15,7 +15,7 @@ function init() {
                 flickrSearchString: 'trinity%20pskov',
                 imgSrc : '',
                 imgAttribution : '',
-                latlng : {lat: 57.822072, lng: 28.329144},                
+                latlng : {lat: 57.822072, lng: 28.329144},
             },
             {
                 name : 'Ice Battle Monument',
@@ -26,28 +26,28 @@ function init() {
             },
             {
                 name : 'Holy Transfiguration Mirozh Monastery',
-                flickrSearchString: 'Спасо-Мирожский%20монастырь.%20Псков',                
+                flickrSearchString: 'Спасо-Мирожский%20монастырь.%20Псков',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.806854, lng: 28.328652},
             },
             {
                 name : 'Monument to Princess Olga',
-                flickrSearchString: 'памятник%20княгине%20ольге%20псков',                
+                flickrSearchString: 'памятник%20княгине%20ольге%20псков',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.816232, lng: 28.334807},
             },
             {
                 name : 'Olginskaya Chapel',
-                flickrSearchString: 'ольгинская%20часовня',                                
+                flickrSearchString: 'ольгинская%20часовня',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.820001, lng: 28.324984},
             },
             {
                 name : 'Alexander Nevskiy Cathedral',
-                flickrSearchString: 'храм%20александра%20невского',                
+                flickrSearchString: 'храм%20александра%20невского',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.807841, lng: 28.321275},
@@ -58,66 +58,66 @@ function init() {
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.805269, lng: 28.334017},
-            },            
+            },
             {
                 name : 'Basil Church on the Hill',
-                flickrSearchString: 'церковь%20василия%20псков',                
+                flickrSearchString: 'церковь%20василия%20псков',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.815271, lng: 28.335788},
             },
             {
                 name : 'Gremyachaya Tower',
-                flickrSearchString: 'Псков.%20Гремячая%20башня',                
+                flickrSearchString: 'Псков.%20Гремячая%20башня',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.823411, lng: 28.347780},
-            },         
+            },
             {
                 name : 'Temple of Assumption',
                 flickrSearchString: 'успения%20богородицы%20псков',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.817890, lng: 28.308747},
-            },         
+            },
             {
                 name : 'Church of the Epiphany',
-                flickrSearchString: 'Церковь Богоявления в Запсковье',                
+                flickrSearchString: 'Церковь Богоявления в Запсковье',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.821998, lng: 28.334581},
-            },     
+            },
             {
                 name : 'Prikaznye Chambers',
-                flickrSearchString: 'Приказные%20палаты%20(16%20век)',                                
+                flickrSearchString: 'Приказные%20палаты%20(16%20век)',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.820175, lng: 28.330228},
-            },            
+            },
             {
                 name : 'Saint George Church',
-                flickrSearchString: 'георгия%20псков',                
+                flickrSearchString: 'георгия%20псков',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.809907, lng: 28.332432},
-            },   
+            },
             {
                 name : 'Menshikov Chambers',
-                flickrSearchString: 'Greatness%20of%20Trinity%20Cathedral',                
+                flickrSearchString: 'Greatness%20of%20Trinity%20Cathedral',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.812303, lng: 28.335181},
-            },         
+            },
             {
                 name : 'Merchant Pechenko House',
-                flickrSearchString: 'pechenko house',                                
+                flickrSearchString: 'pechenko house',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.819669, lng: 28.348716},
             },
             {
                 name : 'Pogankin Chambers',
-                flickrSearchString: '71%20Поганкины%20палаты',                
+                flickrSearchString: '71%20Поганкины%20палаты',
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.811352, lng: 28.337466},
@@ -128,17 +128,17 @@ function init() {
                 imgSrc : '',
                 imgAttribution : '',
                 latlng : {lat: 57.810885, lng: 28.337029},
-            },            
+            },
         ];
 
 //  APPLICATION DATA INITIALIZATION - GET PHOTOS FROM FLICKR
-    
+
     //counter to check that all content was loaded
     var counter = 0;
-    
+
     //Preparation: get Flickr photos of sights using flickr image search API
     //Loop over locations
-        
+
     getFlickrData = function()
     {
         //Create search string
@@ -171,24 +171,24 @@ function init() {
                 } else {
                     getFlickrData();
                 };
-                    
+
             },
             fail:function(data){
                 alert('could not connect to Flickr');
                 initializeKnockout();
-            }        
+            }
         });
 
-    
+
     };
-    
+
     getFlickrData();
 
 //  KNOCKOUT - BASED MV* APPLICATION STARTS HERE
 
 
 //  Definition of Model object - Location
-    
+
     var Location = function(data) {
         this.name = ko.observable(data.name);
         this.imgSrc = ko.observable(data.imgSrc);
@@ -199,21 +199,21 @@ function init() {
 //  Definition of View Model
 
     var ViewModel = function() {
- 
-        var that = this;    
-        
+
+        var that = this;
+
         //Define and fill in the Model from stored data set
-        
+
         this.locationList = ko.observableArray([]);
-        
+
         allLocations.forEach(function(locItem){
 
             that.locationList.push(new Location(locItem));
-            
+
         });
 
         this.currentLocation = ko.observable(this.locationList()[0]);
-        
+
         //Create ViewModel objects based on Model data
 
         //Map object as a part of ViewModel
@@ -222,64 +222,55 @@ function init() {
             zoom: 16
         });
 
-        //InfoWindow object as a part of ViewModel        
+        //InfoWindow object as a part of ViewModel
         this.largeInfowindow = new google.maps.InfoWindow();
         // This function populates the infowindow when the marker is clicked. We'll only allow
         // one infowindow which will open at the marker that is clicked, and populate based
         // on that markers position.
-        //InfoWindow population function as a part of ViewModel                
+        //InfoWindow population function as a part of ViewModel
         this.populateInfoWindow = function(marker, infowindow, imgSrc, imgAtt) {
             infowindow.marker = marker;
             infowindow.setContent('<div>' + marker.title + '</div>'+'<img style="height:20vh" src="'+imgSrc+'" alt="Pskov">'+'<p><a href="'+imgAtt+'">Photo source</a></p>');
             infowindow.open(that.map, marker);
         };
 
-        //Bounds object as a part of ViewModel        
-        this.bounds = new google.maps.LatLngBounds();        
-        //Marker array object as a part of ViewModel        
+        //Bounds object as a part of ViewModel
+        this.bounds = new google.maps.LatLngBounds();
+        //Marker array object as a part of ViewModel
         this.markerArray = [];
 
         //Location switch processing
         this.switchLocation = function(locationListItem) {
-            that.currentLocation(locationListItem);    
+            that.currentLocation(locationListItem);
             //find current marker and make it green
             that.markerArray.forEach(function(marker){
                if(marker.title == that.currentLocation().name()) {
                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
                    that.populateInfoWindow(marker, that.largeInfowindow, that.currentLocation().imgSrc(), that.currentLocation().imgAttribution())
                } else {
-                   marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');               
+                   marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                }
             });
-        };        
+        };
 
         //Fill in marker array using Model data
         this.locationList().forEach(function(locItem){
-        
+
             that.markerArray.push(new google.maps.Marker({
                 position: locItem.latlng(),
                 map: that.map,
                 title: locItem.name(),
                 icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             }));
-            
+
             // Create an onclick event to open an infowindow at each marker and change its color to green
-            
+
             that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
-            
-            /*that.markerArray[that.markerArray.length-1].addListener('click', function() {
-                that.markerArray.forEach(function(marker){
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                });
-                that.populateInfoWindow(this, that.largeInfowindow, locItem.imgSrc(), locItem.imgAttribution());
-                this.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-            });*/
-            
-            
+
             that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
 
         });
-        
+
         //Update map bounds after adding all markers
         this.map.fitBounds(this.bounds);
 
@@ -290,5 +281,5 @@ function init() {
         $( ".cover" ).hide();
         ko.applyBindings(new ViewModel());
     };
-    
+
 }
