@@ -274,6 +274,9 @@ function init() {
         //function - display markers based on filter
         that.displayFilteredMarkers = function(){
 
+            //close infowindow because its marker could have disappeared
+            that.largeInfowindow.close();
+            
             var counter = 0;
             //Fill in marker array using Model data
             that.locationList().forEach(function(locItem){
