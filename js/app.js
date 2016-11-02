@@ -22,7 +22,7 @@ function init() {
                 flickrSearchString: 'ice%20battle%20pskov',
                 imgSrc : '',
                 imgAttribution : '',
-                latlng : {lat: 57.830768, lng: 28.319158},
+                latlng : {lat: 57.847602, lng: 28.270506},
             },
             {
                 name : 'Holy Transfiguration Mirozh Monastery',
@@ -201,7 +201,7 @@ function init() {
 
                     //open infovindow with spinner and default text
                     that.populateInfoWindow(thisMarker, that.largeInfowindow, 'css/spinner.gif', '#')
-                    
+
                     //perform Flickr search for location
                     //send request
                     $.ajax({
@@ -233,8 +233,8 @@ function init() {
 
                         error:function(){
 
-                            //update infowindow with "no image" picture
-                            that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noimage.png', '#')
+                            //update infowindow with "no flickr" picture
+                            that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noflickr.png', '#')
 
                         }
                     });
