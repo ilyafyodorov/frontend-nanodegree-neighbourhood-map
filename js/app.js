@@ -143,10 +143,8 @@ function init() {
 
     var Location = function(data) {
         this.name = ko.observable(data.name);
-        this.imgSrc = ko.observable(data.imgSrc);
-        this.imgAttribution = ko.observable(data.imgAttribution);
-        this.latlng = ko.observable(data.latlng);
-        this.flickrSearchString = ko.observable(data.flickrSearchString);
+        this.latlng = data.latlng;
+        this.flickrSearchString = data.flickrSearchString;
         this.filtered = ko.observable(true);
     };
 
@@ -207,7 +205,7 @@ function init() {
                     //perform Flickr search for location
                     //send request
                     $.ajax({
-                        url: flickrURL+that.currentLocation().flickrSearchString(),
+                        url: flickrURL+that.currentLocation().flickrSearchString,
                         async: true,
                         dataType: 'json',
 
@@ -268,7 +266,7 @@ function init() {
                 if (locItem.filtered()==true) {
 
                     that.markerArray.push(new google.maps.Marker({
-                        position: locItem.latlng(),
+                        position: locItem.latlng,
                         map: that.map,
                         title: locItem.name(),
                         icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
