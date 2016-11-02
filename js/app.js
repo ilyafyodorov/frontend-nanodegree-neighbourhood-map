@@ -200,16 +200,16 @@ function init() {
                     var thisMarker=marker;
 
                     //open infovindow with spinner and default text
-                    that.populateInfoWindow(thisMarker, that.largeInfowindow, 'css/spinner.gif', '#')
+                    that.populateInfoWindow(thisMarker, that.largeInfowindow, 'css/spinner.gif', '#');
 
                     //perform Flickr search for location
                     //send request
                     $.ajax({
                         url: flickrURL+that.currentLocation().flickrSearchString,
                         async: true,
-                        dataType: 'json',
+                        dataType: 'json'})
 
-                        success:function(data){
+                        .done(function(data){
                             var imgSrc;
                             var imgAttribution;
                             //Parse responce
@@ -229,15 +229,13 @@ function init() {
                             };
                             //update infowindow with flickr data
                             that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution)
-                        },
+                        })
 
-                        error:function(){
+                        .fail(function(){
 
                             //update infowindow with "no flickr" picture
                             that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noflickr.png', '#')
-
-                        }
-                    });
+                        });
 
                } else {
                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
