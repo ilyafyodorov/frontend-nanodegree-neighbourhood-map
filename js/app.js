@@ -226,7 +226,7 @@ function init() {
                                 //if Flickr could not find pictures
                                 imgSrc='img/noimage.png';
                                 imgAttribution='#';
-                            };
+                            }
                             //update infowindow with flickr data
                             that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution)
                         })
@@ -245,43 +245,47 @@ function init() {
 
 
         //Marker array object as a part of ViewModel
+        //It is not stored in Location object because it is a part of View
         that.markerArray = [];
+        
+        //Fill in marker array using Model data
+        that.locationList().forEach(function(locItem){
+
+            //add marker only if location is filtered
+            if (locItem.filtered()==true) {
+
+                that.markerArray.push(new google.maps.Marker({
+                    position: locItem.latlng,
+                    map: that.map,
+                    title: locItem.name(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                }));
+
+                // Create an onclick event to open an infowindow at each marker and change its color to green
+
+                that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
+
+                that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
+
+            }
+
+        });        
 
         //function - display markers based on filter
         that.displayFilteredMarkers = function(){
 
-            //clear any previous marker data
-            for (var i = 0; i < that.markerArray.length; i++) {
-                that.markerArray[i].setMap(null);
-            }
-            that.markerArray = [];
-
-
+            var counter = 0;
             //Fill in marker array using Model data
             that.locationList().forEach(function(locItem){
 
-                //add marker only if location is filtered
-                if (locItem.filtered()==true) {
-
-                    that.markerArray.push(new google.maps.Marker({
-                        position: locItem.latlng,
-                        map: that.map,
-                        title: locItem.name(),
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                    }));
-
-                    // Create an onclick event to open an infowindow at each marker and change its color to green
-
-                    that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
-
-                    that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
-
-                }
+                //show marker only if location is filtered
+                that.markerArray[counter].setVisible(locItem.filtered());
+                counter++;
 
             });
 
             //Update map bounds after adding all markers
-            that.map.fitBounds(this.bounds);
+            that.map.fitBounds(that.bounds);
         };
 
         //Function to filter markers according to user input
@@ -302,7 +306,7 @@ function init() {
 
             this.displayFilteredMarkers();
 
-        }
+        };
 
         that.displayFilteredMarkers();
 
