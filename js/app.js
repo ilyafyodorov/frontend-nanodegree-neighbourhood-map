@@ -156,7 +156,7 @@ function init() {
 
         //Define and fill in the Model from stored data set
 
-        this.locationList = ko.observableArray([]);
+        that.locationList = ko.observableArray([]);
 
         allLocations.forEach(function(locItem){
 
@@ -164,34 +164,34 @@ function init() {
 
         });
 
-        this.currentLocation = ko.observable(this.locationList()[0]);
+        that.currentLocation = ko.observable(this.locationList()[0]);
 
         //Create ViewModel objects based on Model data
 
         //Map object as a part of ViewModel
-        this.map = new google.maps.Map(document.getElementById('map'), {
+        that.map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 57.816486, lng: 28.343647},
             zoom: 16
         });
 
         //InfoWindow object as a part of ViewModel
-        this.largeInfowindow = new google.maps.InfoWindow();
+        that.largeInfowindow = new google.maps.InfoWindow();
         // This function populates the infowindow when the marker is clicked. We'll only allow
         // one infowindow which will open at the marker that is clicked, and populate based
         // on that markers position.
         //InfoWindow population function as a part of ViewModel
-        this.populateInfoWindow = function(marker, infowindow, imgSrc, imgAtt) {
+        that.populateInfoWindow = function(marker, infowindow, imgSrc, imgAtt) {
             infowindow.marker = marker;
             infowindow.setContent('<div>' + marker.title + '</div>'+'<img style="height:20vh" src="'+imgSrc+'" alt="Pskov">'+'<p><a href="'+imgAtt+'">Flickr source</a></p>');
             infowindow.open(that.map, marker);
         };
 
         //Bounds object as a part of ViewModel
-        this.bounds = new google.maps.LatLngBounds();
+        that.bounds = new google.maps.LatLngBounds();
 
 
         //Location switch processing
-        this.switchLocation = function(locationListItem) {
+        that.switchLocation = function(locationListItem) {
             that.currentLocation(locationListItem);
             //find current marker and make it green
             that.markerArray.forEach(function(marker){
@@ -247,10 +247,10 @@ function init() {
 
 
         //Marker array object as a part of ViewModel
-        this.markerArray = [];
+        that.markerArray = [];
 
         //function - display markers based on filter
-        this.displayFilteredMarkers = function(){
+        that.displayFilteredMarkers = function(){
 
             //clear any previous marker data
             for (var i = 0; i < that.markerArray.length; i++) {
@@ -287,7 +287,7 @@ function init() {
         };
 
         //Function to filter markers according to user input
-        this.doFiltering = function(formElement) {
+        that.doFiltering = function(formElement) {
             //get filter value from the form
             var filterValue=formElement[0].value;
             var index;
@@ -306,7 +306,7 @@ function init() {
 
         }
 
-        this.displayFilteredMarkers();
+        that.displayFilteredMarkers();
 
     };
     //Initialize knockout
