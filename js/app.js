@@ -228,13 +228,13 @@ function init() {
                                 imgAttribution='#';
                             }
                             //update infowindow with flickr data
-                            that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution)
+                            that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution);
                         })
 
                         .fail(function(){
 
                             //update infowindow with "no flickr" picture
-                            that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noflickr.png', '#')
+                            that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noflickr.png', '#');
                         });
 
                } else {
@@ -251,23 +251,18 @@ function init() {
         //Fill in marker array using Model data
         that.locationList().forEach(function(locItem){
 
-            //add marker only if location is filtered
-            if (locItem.filtered()==true) {
+            that.markerArray.push(new google.maps.Marker({
+                position: locItem.latlng,
+                map: that.map,
+                title: locItem.name(),
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            }));
 
-                that.markerArray.push(new google.maps.Marker({
-                    position: locItem.latlng,
-                    map: that.map,
-                    title: locItem.name(),
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                }));
+            // Create an onclick event to open an infowindow at each marker and change its color to green
 
-                // Create an onclick event to open an infowindow at each marker and change its color to green
+            that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem);});
 
-                that.markerArray[that.markerArray.length-1].addListener('click', function() {that.switchLocation(locItem)});
-
-                that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
-
-            }
+            that.bounds.extend(that.markerArray[that.markerArray.length-1].position);
 
         });        
 
@@ -295,7 +290,6 @@ function init() {
         that.doFiltering = function(formElement) {
             //get filter value from the form
             var filterValue=formElement[0].value;
-            var index;
             //for each list item
             that.locationList().forEach(function(locItem){
                 //Case-insensitive search within list item name
