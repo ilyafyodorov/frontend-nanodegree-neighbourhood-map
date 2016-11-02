@@ -1,6 +1,8 @@
 function init() {
-
-//  APPLICATION DATA INITIALIZATION - PRE-SET INFORMATION
+    
+    "use strict";
+    
+    //  APPLICATION DATA INITIALIZATION - PRE-SET INFORMATION
 
     var allLocations = [
             {
@@ -133,7 +135,7 @@ function init() {
 
 
     // Flickr API URL for search requests
-    flickrURL='https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=756d2646bbf50cde087d43bb80dd3696&format=json&nojsoncallback=1&text='
+    var flickrURL='https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=756d2646bbf50cde087d43bb80dd3696&format=json&nojsoncallback=1&text=';
 
 //  KNOCKOUT - BASED MV* APPLICATION STARTS HERE
 
