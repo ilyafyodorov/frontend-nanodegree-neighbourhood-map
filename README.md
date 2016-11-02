@@ -3,7 +3,9 @@ Author: Ilya Fedorov
 
 ### Getting started
 
-Open index.html in a web browser (Tested with Google Chrome v54)
+Download & open index.html in a web browser or go to
+https://ilyafyodorov.github.io/frontend-nanodegree-neighbourhood-map/.
+Tested with Google Chrome v54.
 
 This application shows interesting locations in Pskov, Russia
 
