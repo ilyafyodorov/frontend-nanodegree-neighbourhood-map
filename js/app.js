@@ -182,7 +182,7 @@ function init() {
         //InfoWindow population function as a part of ViewModel
         this.populateInfoWindow = function(marker, infowindow, imgSrc, imgAtt) {
             infowindow.marker = marker;
-            infowindow.setContent('<div>' + marker.title + '</div>'+'<img style="height:20vh" src="'+imgSrc+'" alt="Pskov">'+'<p><a href="'+imgAtt+'">Photo source</a></p>');
+            infowindow.setContent('<div>' + marker.title + '</div>'+'<img style="height:20vh" src="'+imgSrc+'" alt="Pskov">'+'<p><a href="'+imgAtt+'">Flickr source</a></p>');
             infowindow.open(that.map, marker);
         };
 
@@ -199,6 +199,9 @@ function init() {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
                     var thisMarker=marker;
 
+                    //open infovindow with spinner and default text
+                    that.populateInfoWindow(thisMarker, that.largeInfowindow, 'css/spinner.gif', '#')
+                    
                     //perform Flickr search for location
                     //send request
                     $.ajax({
@@ -220,14 +223,17 @@ function init() {
                                 imgSrc='https://c2.staticflickr.com/'+far+'/'+ser+'/'+id+'_'+sec+'_z.jpg';
                                 imgAttribution='https://www.flickr.com/photos/'+own+'/';
                             } else {
+                                //if Flickr could not find pictures
                                 imgSrc='img/noimage.png';
                                 imgAttribution='#';
                             };
+                            //update infowindow with flickr data
                             that.populateInfoWindow(thisMarker, that.largeInfowindow, imgSrc, imgAttribution)
                         },
 
                         error:function(){
 
+                            //update infowindow with "no image" picture
                             that.populateInfoWindow(thisMarker, that.largeInfowindow, 'img/noimage.png', '#')
 
                         }

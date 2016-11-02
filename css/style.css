@@ -27,9 +27,9 @@ body {
     margin: 10px;
 }
 @media (max-width: 991px) {
-    .list-group { max-height: 200px; }
+    .list-group { max-height: 140px; }
     #map {
-        height: calc(85vh - 200px);
+        height: calc(85vh - 140px);
         width: 97vw;
         margin: 10px;        
     }
